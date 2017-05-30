@@ -1,4 +1,3 @@
-
 #!/usr/bin/env python
 #
 # Copyright (C) 2017 Michael Trunner. New BSD License.
