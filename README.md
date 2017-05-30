@@ -35,3 +35,8 @@ $ python3 ./autovenv.py --help
 ```
 $ sudo apt-get install python3-venv
 ```
+
+## TODOs
+
+* Detect vagrant and change venv path
+* Create pypi release
