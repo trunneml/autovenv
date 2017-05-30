@@ -52,6 +52,7 @@ setup(
         "Topic :: System :: Installation/Setup",
         "Topic :: System :: Archiving :: Packaging"
     ],
-    install_requires=read("requirements.txt").splitlines(),
+    # We only depend on venv but this is a standard python 3 lib
+    install_requires=[],
     zip_safe=True,
 )
