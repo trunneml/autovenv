@@ -5,7 +5,10 @@ Creates a venv from a given requirements.txt file
 Just download autovenv.py into your project folder where the requirements.txt is and run:
 
 ```sh
+$ wget https://raw.githubusercontent.com/trunneml/autovenv/master/autovenv.py
+...
 $ python3 ./autovenv.py
+...
 ```
 
 autovenv will create a venv in the folder `venv` and install all requirements form your `requirements.txt`.
