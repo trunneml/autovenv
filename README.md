@@ -1,4 +1,4 @@
-# autovenv
+# autovenv [![Build Status](https://travis-ci.org/trunneml/autovenv.svg)](https://travis-ci.org/trunneml/autovenv)
 Creates a venv from a given requirements.txt file
 
 ## Installation
