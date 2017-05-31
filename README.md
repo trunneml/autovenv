@@ -37,7 +37,7 @@ $ python3 -m autovenv.py --help
 
 ## Requirements
 
-* Python >= 3.3
+* Python >= 3.4
 * venv (Standard Python lib)
 * Linux, Windows or MacOSX
 
