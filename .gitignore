@@ -99,3 +99,9 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+# Test files
+*.test
+/testautovenv/
+
+requirements.freeze

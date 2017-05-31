@@ -1,14 +1,25 @@
-# autovenv
+# autovenv [![Build Status](https://travis-ci.org/trunneml/autovenv.svg)](https://travis-ci.org/trunneml/autovenv)
 Creates a venv from a given requirements.txt file
 
-## Usage
-Just download autovenv.py into your project folder where the requirements.txt is and run:
+## Installation
+
+Just download autovenv.py into your project folder where the requirements.txt.
 
 ```sh
 $ wget https://raw.githubusercontent.com/trunneml/autovenv/master/autovenv.py
-...
-$ python3 ./autovenv.py
-...
+```
+
+Or install it from pypi via pip:
+
+```sh
+$ pip install autovenv
+```
+
+## Usage
+Switch into your project folder and run:
+
+```sh
+$ python3 -m autovenv.py
 ```
 
 autovenv will create a venv in the folder `venv` and install all requirements form your `requirements.txt`.
@@ -21,12 +32,12 @@ To reduce build time autovenv checks if your `requirements.freeze` has changed b
 For more information run:
 
 ```
-$ python3 ./autovenv.py --help
+$ python3 -m autovenv.py --help
 ```
 
 ## Requirements
 
-* Python >= 3.3
+* Python >= 3.4
 * venv (Standard Python lib)
 * Linux, Windows or MacOSX
 
@@ -39,4 +50,3 @@ $ sudo apt-get install python3-venv
 ## TODOs
 
 * Detect vagrant and change venv path
-* Create pypi release
