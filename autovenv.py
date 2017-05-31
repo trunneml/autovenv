@@ -131,6 +131,9 @@ class AutoEnvBuilder(venv.EnvBuilder):
         pip.freeze(filepath)
 
     def download(self, env_dir):
+        """
+        Downloads all requirements into the download folder.
+        """
         if not self._is_frozen():
             raise AutoEnvException(
                 "VENV is not frozen! Run setup before download.")
@@ -186,10 +189,9 @@ class AutoEnvBuilder(venv.EnvBuilder):
         if self._is_frozen():
             logger.info('Using freeze file: %s', self.FREEZE_FILENAME)
             return ['-r', self.FREEZE_FILENAME]
-        else:
-            logger.info("Using requirements file: %s",
-                        self.REQUIREMENTS_FILENAME)
-            return ['-r', self.REQUIREMENTS_FILENAME]
+        logger.info("Using requirements file: %s",
+                    self.REQUIREMENTS_FILENAME)
+        return ['-r', self.REQUIREMENTS_FILENAME]
 
     def _install_requirements(self, pip):
         logger.info('Running pip install ...')
@@ -214,6 +216,7 @@ class AutoEnvBuilder(venv.EnvBuilder):
         return os.path.isfile(self.FREEZE_FILENAME)
 
 def main(args=None):
+    """ Main function """
     # Setup argparse.
     import argparse
     parser = argparse.ArgumentParser(
@@ -228,13 +231,11 @@ def main(args=None):
         '--update-pip',
         default=False, action='store_true', dest='update_pip',
         help='Updates pip in the environment.')
-    # TODO: Add copies argument
     parser.add_argument(
         '--symlinks',
         default=False, action='store_true', dest='symlinks',
         help='Try to use symlinks rather than copies, when symlinks are not '
              'the default for the platform.')
-    # TODO: Detect vagrant
     venv_path_basedir = '.'
     venv_path = os.path.join(venv_path_basedir, 'venv')
     parser.add_argument('-p', '--path', dest='venv_path', default=venv_path,
@@ -248,7 +249,6 @@ def main(args=None):
         'mode', choices=['setup', 'download'],
         default='setup', nargs='?',
         help="Use 'setup' to create the venv.\n"
-             "Use 'freeze' to lock all requirements to the current version.\n"
              "Use 'download' to download all requirements into a folder "
              "('./requirements').")
 
@@ -257,17 +257,17 @@ def main(args=None):
 
     # Setup Logger
     logger.setLevel(logging.DEBUG)
-    ch = logging.StreamHandler()
+    console_handler = logging.StreamHandler()
     if options.verbosity:
-        ch.setLevel(logging.DEBUG)
+        console_handler.setLevel(logging.DEBUG)
     else:
-        ch.setLevel(logging.INFO)
+        console_handler.setLevel(logging.INFO)
     # create formatter
     formatter = logging.Formatter(
         '%(asctime)s %(levelname)s - %(message)s')
-    ch.setFormatter(formatter)
-    # add ch to logger
-    logger.addHandler(ch)
+    console_handler.setFormatter(formatter)
+    # add console_handler to logger
+    logger.addHandler(console_handler)
 
     # Run AutoEnvBuilder
     builder = AutoEnvBuilder(update_pip=options.update_pip,
@@ -278,7 +278,7 @@ def main(args=None):
             builder.download(options.venv_path)
         else:
             builder.create(options.venv_path)
-    except AutoEnvException as e:
-        logger.error(e.message)
+    except AutoEnvException as autoenv_exception:
+        logger.error(autoenv_exception.message)
 if __name__ == '__main__':
     main()
