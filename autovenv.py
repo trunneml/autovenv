@@ -116,14 +116,13 @@ class AutoEnvBuilder(venv.EnvBuilder):
     DOWNLOAD_FOLDER = 'requirements'
 
     def __init__(self, use_index=None, update_pip=False,
-                 update_setuptools=False, symlinks=False,
-                 prompt=None):
+                 update_setuptools=False, symlinks=False):
         self.use_index = use_index
         self.update_pip = update_pip
         self.update_setuptools = update_setuptools
         super().__init__(
             system_site_packages=False, clear=True,
-            symlinks=False, upgrade=False, with_pip=True, prompt=prompt)
+            symlinks=False, upgrade=False, with_pip=True)
 
     def _freeze(self, pip):
         filepath = os.path.abspath(self.FREEZE_FILENAME)
