@@ -14,6 +14,7 @@ def test_autovenv():
     """
     # Arrange
     autovenv.AutoEnvBuilder.REQUIREMENTS_FILENAME = 'requirements.test'
+    open(autovenv.AutoEnvBuilder.REQUIREMENTS_FILENAME, 'a').close()
     autovenv.AutoEnvBuilder.FREEZE_FILENAME = 'freeze.test'
     venv_name = 'testautovenv'
     if os.path.exists(venv_name):
@@ -33,6 +34,7 @@ def test_autovenv_freeze():
     """
     # Arrange
     autovenv.AutoEnvBuilder.REQUIREMENTS_FILENAME = 'requirements.test'
+    open(autovenv.AutoEnvBuilder.REQUIREMENTS_FILENAME, 'a').close()
     autovenv.AutoEnvBuilder.FREEZE_FILENAME = 'freeze.test'
     venv_name = 'testautovenv'
     if os.path.exists(venv_name):
