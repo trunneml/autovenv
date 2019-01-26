@@ -43,7 +43,7 @@ $ python3 -m venvfreezer --help
 * venv (Standard Python lib)
 * Linux, Windows or MacOSX
 
-** Hint: ** Under Debian and Ubuntu the standard venv lib must be installed seperate by running:
+**Hint:** Under Debian and Ubuntu the standard venv lib must be installed seperate by running:
 
 ```
 $ sudo apt-get install python3-venv
