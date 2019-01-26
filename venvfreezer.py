@@ -58,7 +58,7 @@ class PipHelper:
         :param params: List of parameters
         """
         return subprocess.check_call(
-            self.pip_cmd + ['install'] +  params)
+            self.pip_cmd + ['install'] +  list(params))
 
     def freeze(self, freeze_filepath):
         """
@@ -196,7 +196,8 @@ class VenvFreezer(venv.EnvBuilder):
                 in self.REQUIREMENTS_FILENAMES)
             if filename]
         logger.info("Using requirements files: %s", req_files)
-        return list(itertools.chain(('-r', filename) for filename in req_files))
+        return list(itertools.chain.from_iterable(
+            ('-r', filename) for filename in req_files))
 
     def _install_requirements(self, pip):
         logger.info('Running pip install ...')
