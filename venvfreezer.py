@@ -196,7 +196,7 @@ class VenvFreezer(venv.EnvBuilder):
                 in self.REQUIREMENTS_FILENAMES)
             if filename]
         logger.info("Using requirements files: %s", req_files)
-        return itertools.chain(('-r', filename) for filename in req_files)
+        return list(itertools.chain(('-r', filename) for filename in req_files))
 
     def _install_requirements(self, pip):
         logger.info('Running pip install ...')
