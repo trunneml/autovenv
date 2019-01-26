@@ -13,8 +13,8 @@ def test_autovenv():
     Standard system test. No edge cases.
     """
     # Arrange
-    autovenv.AutoEnvBuilder.REQUIREMENTS_FILENAME = 'requirements.test'
-    open(autovenv.AutoEnvBuilder.REQUIREMENTS_FILENAME, 'a').close()
+    autovenv.AutoEnvBuilder.REQUIREMENTS_FILENAMES = ['requirements.test']
+    open(autovenv.AutoEnvBuilder.REQUIREMENTS_FILENAMES[0], 'a').close()
     autovenv.AutoEnvBuilder.FREEZE_FILENAME = 'freeze.test'
     venv_name = 'testautovenv'
     if os.path.exists(venv_name):
@@ -33,8 +33,8 @@ def test_autovenv_freeze():
     Standard system test for freeze case.
     """
     # Arrange
-    autovenv.AutoEnvBuilder.REQUIREMENTS_FILENAME = 'requirements.test'
-    open(autovenv.AutoEnvBuilder.REQUIREMENTS_FILENAME, 'a').close()
+    autovenv.AutoEnvBuilder.REQUIREMENTS_FILENAMES = ['requirements.test']
+    open(autovenv.AutoEnvBuilder.REQUIREMENTS_FILENAMES[0], 'a').close()
     autovenv.AutoEnvBuilder.FREEZE_FILENAME = 'freeze.test'
     venv_name = 'testautovenv'
     if os.path.exists(venv_name):

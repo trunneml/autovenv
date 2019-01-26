@@ -21,6 +21,8 @@ import os.path
 import subprocess
 import sys
 import venv
+import itertools
+import glob
 
 logger = logging.getLogger(__name__)
 
@@ -111,7 +113,7 @@ class AutoEnvBuilder(venv.EnvBuilder):
     """
 
     CHECKSUM_FILENAME = 'requirements.sha256'
-    REQUIREMENTS_FILENAME = 'requirements.txt'
+    REQUIREMENTS_FILENAMES = ['requirements.txt', 'requirements.*.txt']
     FREEZE_FILENAME = 'requirements.freeze'
     DOWNLOAD_FOLDER = 'requirements'
 
@@ -188,9 +190,13 @@ class AutoEnvBuilder(venv.EnvBuilder):
         if self._is_frozen():
             logger.info('Using freeze file: %s', self.FREEZE_FILENAME)
             return ['-r', self.FREEZE_FILENAME]
-        logger.info("Using requirements file: %s",
-                    self.REQUIREMENTS_FILENAME)
-        return ['-r', self.REQUIREMENTS_FILENAME]
+        req_files = [
+            filename for filename in itertools.chain.from_iterable(
+                glob.glob(filepattern) for filepattern
+                in self.REQUIREMENTS_FILENAMES)
+            if filename]
+        logger.info("Using requirements files: %s", req_files)
+        return itertools.chain(('-r', filename) for filename in req_files)
 
     def _install_requirements(self, pip):
         logger.info('Running pip install ...')
@@ -279,5 +285,7 @@ def main(args=None):
             builder.create(options.venv_path)
     except AutoEnvException as autoenv_exception:
         logger.error(autoenv_exception.message)
+
+
 if __name__ == '__main__':
     main()

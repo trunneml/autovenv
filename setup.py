@@ -19,7 +19,7 @@ def read(fname):
 
 setup(
     name="autovenv",
-    version="0.5",
+    version="0.6",
     author="Michael Trunner",
     author_email="michael@trunner.de",
     maintainer="Michael Trunner",
