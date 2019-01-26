@@ -1,4 +1,4 @@
-# VenvFreezer [![Build Status](https://travis-ci.org/trunneml/autovenv.svg)](https://travis-ci.org/trunneml/autovenv)
+# VenvFreezer [![Build Status](https://travis-ci.org/trunneml/venvfreezer.svg)](https://travis-ci.org/trunneml/venvfreezer)
 Creates a venv from a given requirements.txt file and requirements.*.txt files.
 
 ## Installation
@@ -6,7 +6,7 @@ Creates a venv from a given requirements.txt file and requirements.*.txt files.
 Just download venvfreezer.py into your project folder where the requirements.txt is.
 
 ```sh
-$ wget https://raw.githubusercontent.com/trunneml/autovenv/master/autovenv.py
+$ wget https://raw.githubusercontent.com/trunneml/venvfreezer/master/venvfreezer.py
 ```
 
 Or checkout out this repository and run:
