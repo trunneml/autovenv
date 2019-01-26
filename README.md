@@ -1,32 +1,40 @@
-# autovenv [![Build Status](https://travis-ci.org/trunneml/autovenv.svg)](https://travis-ci.org/trunneml/autovenv)
-Creates a venv from a given requirements.txt file
+# VenvFreezer [![Build Status](https://travis-ci.org/trunneml/autovenv.svg)](https://travis-ci.org/trunneml/autovenv)
+Creates a venv from a given requirements.txt file and requirements.*.txt files.
 
 ## Installation
 
-Just download autovenv.py into your project folder where the requirements.txt.
+Just download venvfreezer.py into your project folder where the requirements.txt is.
 
 ```sh
 $ wget https://raw.githubusercontent.com/trunneml/autovenv/master/autovenv.py
+```
+
+Or checkout out this repository and run:
+
+```sh
+$ pip install .
 ```
 
 ## Usage
 Switch into your project folder and run:
 
 ```sh
-$ python3 -m autovenv.py
+$ python3 -m venvfreezer
 ```
 
-autovenv will create a venv in the folder `venv` and install all requirements form your `requirements.txt`.
+VenvFreezer will create a venv in the folder `venv` and install all requirements form your `requirements.txt` and requirements.*.txt files.
 
-autovenv also creates a `requirements.freeze` with the exect versions of your requirements file like php composer or npm packages. You can commit this file to save the tested development versions of your requirements without messing your `requirements.txt`.
-The next time you create your venv autovenv will use this `requirements.freeze` file instead of `requirements.txt`.
+VenvFreezer also creates a `requirements.lock` file with the exact versions of your requirements (like php composer or npm packages).
+You can commit this file to save the tested versions of your requirements without messing up your `requirements.txt`.
+The next time you create your venv VenvFreezer will use this `requirements.lock` to recreate a venv with the same versions as before.
 
-To reduce build time autovenv checks if your `requirements.freeze` has changed between two autovenv.py runs or not and will not recreate the venv when nothing has changed. This way you can run autovenv after every `git pull` without wasting build time. If you still want to recreate the venv just delete the folder (`rm -Rf venv`) and rerun `python autovenv.py`.
+To reduce build time VenvFreezer also checks if your `requirements.lock` has changed between two VenvFreezer runs. It will not recreate the venv when nothing has changed. This way you can run VenvFreezer after every `git pull` without wasting build time if nothing has changed on your requirements.
+If you still want to recreate the venv just delete the folder (`rm -Rf venv`) and rerun `python venvfreezer`.
 
 For more information run:
 
 ```
-$ python3 -m autovenv.py --help
+$ python3 -m venvfreezer --help
 ```
 
 ## Requirements
@@ -44,3 +52,5 @@ $ sudo apt-get install python3-venv
 ## TODOs
 
 * Detect vagrant and change venv path
+* Add upgrade command
+* Upload to pypi
