@@ -9,12 +9,6 @@ Just download autovenv.py into your project folder where the requirements.txt.
 $ wget https://raw.githubusercontent.com/trunneml/autovenv/master/autovenv.py
 ```
 
-Or install it from pypi via pip:
-
-```sh
-$ pip install autovenv
-```
-
 ## Usage
 Switch into your project folder and run:
 
