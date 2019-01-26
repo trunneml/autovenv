@@ -58,7 +58,7 @@ class PipHelper:
         :param params: List of parameters
         """
         return subprocess.check_call(
-            self.pip_cmd + ['install'] +  list(params))
+            self.pip_cmd + ['install'] +  params)
 
     def freeze(self, freeze_filepath):
         """
