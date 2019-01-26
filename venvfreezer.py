@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-autovenv -- helper script for pip and venv
+venvfreezer -- helper script for pip and venv
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -95,7 +95,7 @@ def checksum_of_file(filepath):
         return checksum
 
 
-class AutoEnvException(Exception):
+class VenvFreezerException(Exception):
     """ Base Exception for AuteEnv """
 
     def __init__(self, message):
@@ -106,7 +106,7 @@ class AutoEnvException(Exception):
         super().__init__(message)
 
 
-class AutoEnvBuilder(venv.EnvBuilder):
+class VenvFreezer(venv.EnvBuilder):
     """
     EnvBuilder that automatically installs all dependencies from
     the requirements.txt
@@ -114,7 +114,7 @@ class AutoEnvBuilder(venv.EnvBuilder):
 
     CHECKSUM_FILENAME = 'requirements.sha256'
     REQUIREMENTS_FILENAMES = ['requirements.txt', 'requirements.*.txt']
-    FREEZE_FILENAME = 'requirements.freeze'
+    FREEZE_FILENAME = 'requirements.lock'
     DOWNLOAD_FOLDER = 'requirements'
 
     def __init__(self, use_index=None, update_pip=False,
@@ -136,7 +136,7 @@ class AutoEnvBuilder(venv.EnvBuilder):
         Downloads all requirements into the download folder.
         """
         if not self._is_frozen():
-            raise AutoEnvException(
+            raise VenvFreezerException(
                 "VENV is not frozen! Run setup before download.")
         pip = PipHelper(env_dir)
         pip.download(self.DOWNLOAD_FOLDER, '-r', self.FREEZE_FILENAME)
@@ -225,7 +225,7 @@ def main(args=None):
     # Setup argparse.
     import argparse
     parser = argparse.ArgumentParser(
-        prog=__name__ if __name__ != '__main__' else 'autovenv.py',
+        prog=__name__ if __name__ != '__main__' else 'venvfreeze.py',
         description="Creates a virtual Python environment with all"
                     "dependencies from the requirements.txt installed.")
     parser.add_argument(
@@ -274,17 +274,17 @@ def main(args=None):
     # add console_handler to logger
     logger.addHandler(console_handler)
 
-    # Run AutoEnvBuilder
-    builder = AutoEnvBuilder(update_pip=options.update_pip,
-                             update_setuptools=options.update_setuptools,
-                             symlinks=options.symlinks)
+    # Run VenvFreezer
+    builder = VenvFreezer(update_pip=options.update_pip,
+                          update_setuptools=options.update_setuptools,
+                          symlinks=options.symlinks)
     try:
         if options.mode == 'download':
             builder.download(options.venv_path)
         else:
             builder.create(options.venv_path)
-    except AutoEnvException as autoenv_exception:
-        logger.error(autoenv_exception.message)
+    except VenvFreezerException as venv_exception:
+        logger.error(venv_exception.message)
 
 
 if __name__ == '__main__':

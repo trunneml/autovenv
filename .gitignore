@@ -106,6 +106,6 @@ ENV/
 
 # Test files
 *.test
-/testautovenv/
+/testvenvfreezer/
 
 requirements.freeze

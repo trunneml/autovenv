@@ -18,19 +18,19 @@ def read(fname):
 
 
 setup(
-    name="autovenv",
-    version="0.6",
-    author="Michael Trunner",
+    name="venvfreezer",
+    version="1.0",
+    author="Michael Graf",
     author_email="michael@trunner.de",
-    maintainer="Michael Trunner",
+    maintainer="Michael Graf",
     maintainer_email="michael@trunner.de",
     description=("Helper script for venv and pip"),
     license="Apache License 2.0",
     keywords="pip venv requirements virtualenv",
-    url="https://github.com/trunneml/autovenv",
+    url="https://github.com/trunneml/venvfreezer",
     packages=find_packages(
         exclude=["*.tests", "*.tests.*", "tests.*", "tests"]),
-    py_modules=['autovenv'],
+    py_modules=['venvfreezer'],
     long_description=read('README.md'),
     classifiers=[
         "Development Status :: 4 - Beta"
