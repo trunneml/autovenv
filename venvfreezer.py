@@ -126,11 +126,6 @@ class VenvFreezer(venv.EnvBuilder):
             system_site_packages=False, clear=True,
             symlinks=False, upgrade=False, with_pip=True)
 
-    def _freeze(self, pip):
-        filepath = os.path.abspath(self.FREEZE_FILENAME)
-        logger.info('Creating freeze file: %s', filepath)
-        pip.freeze(filepath)
-
     def download(self, env_dir):
         """
         Downloads all requirements into the download folder.
@@ -183,7 +178,9 @@ class VenvFreezer(venv.EnvBuilder):
             pip.install('-U', 'pip')
         self._install_requirements(pip)
         if not self._is_frozen():
-            self._freeze(pip)
+            filepath = os.path.abspath(self.FREEZE_FILENAME)
+            logger.info('Creating freeze file: %s', filepath)
+            pip.freeze(filepath)
         self._create_checksum_file(context)
 
     def _get_requirements_files_parameters(self):
@@ -203,8 +200,8 @@ class VenvFreezer(venv.EnvBuilder):
         logger.info('Running pip install ...')
         cmd = self._get_requirements_files_parameters()
         # Checking requirements folder
-        if os.path.isdir('requirements'):
-            cmd.extend(['-f', 'requirements'])
+        if os.path.isdir(self.DOWNLOAD_FOLDER):
+            cmd.extend(['-f', self.DOWNLOAD_FOLDER])
         # setting no-index
         if self.use_index is False:
             cmd.append('--no-index')
