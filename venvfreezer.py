@@ -57,8 +57,28 @@ class PipHelper:
 
         :param params: List of parameters
         """
-        return subprocess.check_call(
-            self.pip_cmd + ['install'] +  list(params))
+        cmd = ['install']
+        cmd.extend(params)
+        return subprocess.check_call(self.pip_cmd + cmd)
+
+    def install_from_files(self, req_files, use_index=True, requirements_folder=None):
+        """
+        Calls pip install -r for all given requirements files.
+
+        :param req_files: List of the requirement files
+        """
+        cmd = ['install']
+        # setting no-index
+        if use_index is False:
+            cmd.append('--no-index')
+        # Checking requirements folder
+        if os.path.isdir(requirements_folder):
+            cmd.extend(['-f', requirements_folder])
+
+        cmd.extend(itertools.chain.from_iterable(
+            ('-r', filename) for filename in req_files))
+
+        return subprocess.check_call(self.pip_cmd + cmd)
 
     def freeze(self, freeze_filepath):
         """
@@ -176,44 +196,32 @@ class VenvFreezer(venv.EnvBuilder):
         if self.update_pip:
             logger.info('Updateing pip ...')
             pip.install('-U', 'pip')
-        self._install_requirements(pip)
-        if not self._is_frozen():
+
+        logger.info('Running pip install ...')
+        if self._is_frozen():
+            logger.info('Using freeze file: %s', self.FREEZE_FILENAME)
+            pip.install_from_files(
+                [self.FREEZE_FILENAME],
+                use_index=self.use_index,
+                requirements_folder=self.DOWNLOAD_FOLDER)
+        else:
+            filenames = itertools.chain.from_iterable(
+                glob.glob(filepattern) for filepattern
+                in self.REQUIREMENTS_FILENAMES
+                if glob.glob(filepattern))
+            logger.info('Using requirement files: %s', filenames)
+            pip.install_from_files(
+                filenames,
+                use_index=self.use_index,
+                requirements_folder=self.DOWNLOAD_FOLDER)
             filepath = os.path.abspath(self.FREEZE_FILENAME)
             logger.info('Creating freeze file: %s', filepath)
             pip.freeze(filepath)
-        self._create_checksum_file(context)
 
-    def _get_requirements_files_parameters(self):
-        if self._is_frozen():
-            logger.info('Using freeze file: %s', self.FREEZE_FILENAME)
-            return ['-r', self.FREEZE_FILENAME]
-        req_files = [
-            filename for filename in itertools.chain.from_iterable(
-                glob.glob(filepattern) for filepattern
-                in self.REQUIREMENTS_FILENAMES)
-            if filename]
-        logger.info("Using requirements files: %s", req_files)
-        return list(itertools.chain.from_iterable(
-            ('-r', filename) for filename in req_files))
-
-    def _install_requirements(self, pip):
-        logger.info('Running pip install ...')
-        cmd = self._get_requirements_files_parameters()
-        # Checking requirements folder
-        if os.path.isdir(self.DOWNLOAD_FOLDER):
-            cmd.extend(['-f', self.DOWNLOAD_FOLDER])
-        # setting no-index
-        if self.use_index is False:
-            cmd.append('--no-index')
-        pip.install(*cmd)
-
-    def _create_checksum_file(self, context):
         logger.info('Creating checksum of %s ...', self.FREEZE_FILENAME)
-        checksum = checksum_of_file(self.FREEZE_FILENAME)
-        checksum_filepath = os.path.join(
-            context.env_dir, self.CHECKSUM_FILENAME)
-        with open(checksum_filepath, mode='w') as f:
-            f.write(checksum)
+        with open(os.path.join(context.env_dir, self.CHECKSUM_FILENAME),
+                  mode='w') as f:
+            f.write(checksum_of_file(self.FREEZE_FILENAME))
 
     def _is_frozen(self):
         return os.path.isfile(self.FREEZE_FILENAME)
