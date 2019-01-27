@@ -134,7 +134,7 @@ class VenvFreezer(venv.EnvBuilder):
 
     CHECKSUM_FILENAME = 'requirements.sha256'
     REQUIREMENTS_FILENAMES = ['requirements.txt', 'requirements.*.txt']
-    FREEZE_FILENAME = 'requirements.lock'
+    FREEZE_FILENAME = 'requirements.freeze'
     DOWNLOAD_FOLDER = 'requirements'
 
     def __init__(self, use_index=None, update_pip=False,

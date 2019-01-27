@@ -109,3 +109,4 @@ ENV/
 /testvenvfreezer/
 
 requirements.freeze
+/requirements/
